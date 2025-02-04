@@ -19,20 +19,42 @@ app.add_middleware(
 )
 
 class TextRequest(BaseModel):
-    text: str
+    text: dict
 
 @app.post('/get_text')
 def translate(request: TextRequest):
+    # print(request)
+    # print(request.text)
+    
     original_text = request.text
-    tokenizer = AutoTokenizer.from_pretrained("facebook/nllb-200-distilled-600M")
-    model = AutoModelForSeq2SeqLM.from_pretrained("facebook/nllb-200-distilled-600M")
-    article = original_text
-    inputs = tokenizer(article, return_tensors="pt")
+    print(original_text)
+    for key, value in original_text.items():
+        print(key, value)
+        if key == 'es':
+            tokenizer = AutoTokenizer.from_pretrained("facebook/nllb-200-distilled-600M")
+            model = AutoModelForSeq2SeqLM.from_pretrained("facebook/nllb-200-distilled-600M")
+            article = value
+            inputs = tokenizer(article, return_tensors="pt")
 
-    translated_tokens = model.generate(
-        **inputs, 
-        forced_bos_token_id=tokenizer.convert_tokens_to_ids("spa_Latn"), 
-        max_length=30
-    )
+            translated_tokens = model.generate(
+                **inputs, 
+                forced_bos_token_id=tokenizer.convert_tokens_to_ids("spa_Latn"), 
+                max_length=30
+            )
 
-    return tokenizer.batch_decode(translated_tokens, skip_special_tokens=True)[0]
+            original_text[key] =  tokenizer.batch_decode(translated_tokens, skip_special_tokens=True)[0]
+            print(original_text)
+        if key == 'en':
+            tokenizer = AutoTokenizer.from_pretrained("facebook/nllb-200-distilled-600M")
+            model = AutoModelForSeq2SeqLM.from_pretrained("facebook/nllb-200-distilled-600M")
+            article = value
+            inputs = tokenizer(article, return_tensors="pt")
+
+            translated_tokens = model.generate(
+                **inputs, 
+                forced_bos_token_id=tokenizer.convert_tokens_to_ids("eng_Latn"), 
+                max_length=30
+            )
+
+            original_text[key] =  tokenizer.batch_decode(translated_tokens, skip_special_tokens=True)[0]
+            print(original_text)
