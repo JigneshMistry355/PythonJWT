@@ -1,4 +1,4 @@
-from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
+from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, MarianMTModel, MarianTokenizer
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -48,9 +48,40 @@ def translate_text(target_language, text):
 def translate(request: TextRequest):
     response_data = {}
     language_select = {
-        "en": "eng_Latn",
-        "es": "spa_Latn"
-        }
+    "en": "eng_Latn",  # English
+    "es": "spa_Latn",  # Spanish
+    "fr": "fra_Latn",  # French
+    "de": "deu_Latn",  # German
+    "it": "ita_Latn",  # Italian
+    "pt": "por_Latn",  # Portuguese
+    "nl": "nld_Latn",  # Dutch
+    "ru": "rus_Cyrl",  # Russian (Cyrillic)
+    "pl": "pol_Latn",  # Polish
+    "sv": "swe_Latn",  # Swedish
+    "da": "dan_Latn",  # Danish
+    "fi": "fin_Latn",  # Finnish
+    "no": "nor_Latn",  # Norwegian
+    "el": "ell_Grek",  # Greek
+    "cs": "ces_Latn",  # Czech
+    "hu": "hun_Latn",  # Hungarian
+    "ro": "ron_Latn",  # Romanian
+    "bg": "bul_Cyrl",  # Bulgarian (Cyrillic)
+    "sk": "slk_Latn",  # Slovak
+    "sl": "slv_Latn",  # Slovenian
+    "hr": "hrv_Latn",  # Croatian
+    "sr": "srp_Cyrl",  # Serbian (Cyrillic)
+    "mk": "mkd_Cyrl",  # Macedonian (Cyrillic)
+    "et": "est_Latn",  # Estonian
+    "lv": "lav_Latn",  # Latvian
+    "lt": "lit_Latn",  # Lithuanian
+    "mt": "mlt_Latn",  # Maltese
+    "is": "isl_Latn",  # Icelandic
+    "ga": "gle_Latn",  # Irish (Gaelic)
+    "cy": "cym_Latn",  # Welsh
+    "sq": "sqi_Latn",  # Albanian
+    "bs": "bos_Latn",  # Bosnian
+}
+
     lang = ''
     text = ''
     for key, value in request.sender_message.items():
