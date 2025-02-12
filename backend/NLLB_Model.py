@@ -80,6 +80,12 @@ def translate(request: TextRequest):
     "cy": "cym_Latn",  # Welsh
     "sq": "sqi_Latn",  # Albanian
     "bs": "bos_Latn",  # Bosnian
+    "hi": "hin_Deva",  # Hindi
+    "ja": "jpn_Jpan",  # Japanese
+    "zh": "zho_Hans",  # Chinese (Simplified)
+    "ko": "kor_Hang",  # Korean
+    "ta": "tam_Taml",  # Tamil
+    "th": "tha_Thai",  # Thai
 }
 
     lang = ''
